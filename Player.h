@@ -8,76 +8,87 @@ class Player {
 		int life;
 		std::string name;
 		sf::Vector2f pos;
-		sf::Vector2f rot;
+		float rot;
 		float speed;
+		sf::Color color;
 	public:
 		Player();
-		Player(int, std::string, sf::Vector2f, sf::Vector2f, float);
+		Player(int, std::string, sf::Vector2f, float, float, sf::Color);
 		~Player();
-		void Create(int, std::string, sf::Vector2f, sf::Vector2f, float);
+		void Create(int, std::string, sf::Vector2f, float, float,sf::Color);
 		int GetLife();
 		std::string GetName();
 		sf::Vector2f GetPos();
-		sf::Vector2f GetRot();
+		float GetRot();
 		float GetSpeed();
 		sf::RectangleShape GetShape();
 		void SetLife(int);
 		void SetName(std::string);
 		void SetPos(sf::Vector2f);
-		void SetRot(sf::Vector2f);
+		void SetRot(float);
 		bool mMoveUp;
 		bool mMoveDown;
 		bool mMoveRight;
 		bool mMoveLeft;
+		bool mRotateLeft;
+		bool mRotateRight;
 };
 
 Player::Player() {
 	this->life = 0;
 	this->name = "";
 	this->pos = sf::Vector2f(0, 0);
-	this->rot = sf::Vector2f(0, 0);
+	this->rot = 0;
 }
 
-Player::Player(int life, std::string name, sf::Vector2f pos, sf::Vector2f rot, float speed) {
+Player::Player(int life, std::string name, sf::Vector2f pos, float rot, float speed, sf::Color color) {
 	this->life = life;
 	this->name = name;
 	this->pos = pos;
 	this->rot = rot;
 	this->texture.loadFromFile("./Assets/Player.png");
-	this->collider.setSize(sf::Vector2f(128, 80));
+	this->collider.setSize(sf::Vector2f(64, 40));
 	this->collider.setTexture(&texture);
 	this->collider.setOutlineColor(sf::Color::Green);
 	this->collider.setOutlineThickness(1);
 	this->speed = speed;
-	this->mMoveUp = false;
-	this->mMoveDown = false;
-	this->mMoveLeft = false;
-	this->mMoveRight = false;
+	this->color = color;
+	mMoveUp = false;
+	mMoveDown = false;
+	mMoveLeft = false;
+	mMoveRight = false; 
+	mRotateLeft = false;
+	mRotateRight = false;
 	this->collider.setPosition(pos);
-	this->collider.setOrigin(sf::Vector2f(64, 40));
+	this->collider.setOrigin(sf::Vector2f(32, 20));
+	this->collider.setFillColor(color);
 }
 
 Player::~Player() {
 
 }
 
-void Player::Create(int life, std::string name, sf::Vector2f pos, sf::Vector2f rot, float speed) {
+void Player::Create(int life, std::string name, sf::Vector2f pos, float rot, float speed, sf::Color color) {
 	this->life = life;
 	this->name = name;
 	this->pos = pos;
 	this->rot = rot;
 	this->texture.loadFromFile("./Assets/Player.png");
-	this->collider.setSize(sf::Vector2f(128, 80));
+	this->collider.setSize(sf::Vector2f(64, 40));
 	this->collider.setTexture(&texture);
 	this->collider.setOutlineColor(sf::Color::Green);
 	this->collider.setOutlineThickness(1);
 	this->speed = speed;
+	this->color = color;
 	this->mMoveUp = false;
 	this->mMoveDown = false;
 	this->mMoveLeft = false;
 	this->mMoveRight = false;
+	mRotateLeft = false;
+	mRotateRight = false;
 	this->collider.setPosition(pos);
-	this->collider.setOrigin(sf::Vector2f(64,40));
+	this->collider.setOrigin(sf::Vector2f(32,20));
+	this->collider.setFillColor(color);
 }
 
 int Player::GetLife() {
@@ -92,7 +103,7 @@ sf::Vector2f Player::GetPos() {
 	return pos;
 }
 
-sf::Vector2f Player::GetRot() {
+float Player::GetRot() {
 	return rot;
 }
 
@@ -117,6 +128,7 @@ void Player::SetPos(sf::Vector2f pos) {
 	collider.setPosition(pos);
 }
 
-void Player::SetRot(sf::Vector2f rot) {
+void Player::SetRot(float rot) {
 	this->rot = rot;
+	collider.setRotation(rot);
 }
