@@ -11,11 +11,12 @@ class Player {
 		float rot;
 		float speed;
 		sf::Color color;
+		float delayShoot;
 	public:
 		Player();
-		Player(int, std::string, sf::Vector2f, float, float, sf::Color);
+		Player(int, std::string, sf::Vector2f, float, float, sf::Color, float);
 		~Player();
-		void Create(int, std::string, sf::Vector2f, float, float,sf::Color);
+		void Create(int, std::string, sf::Vector2f, float, float,sf::Color, float);
 		int GetLife();
 		std::string GetName();
 		sf::Vector2f GetPos();
@@ -26,12 +27,15 @@ class Player {
 		void SetName(std::string);
 		void SetPos(sf::Vector2f);
 		void SetRot(float);
+		void SetDelayShoot(float);
 		bool mMoveUp;
 		bool mMoveDown;
 		bool mMoveRight;
 		bool mMoveLeft;
 		bool mRotateLeft;
 		bool mRotateRight;
+		bool mShoot;
+		float GetDelayShoot();
 };
 
 Player::Player() {
@@ -39,9 +43,11 @@ Player::Player() {
 	this->name = "";
 	this->pos = sf::Vector2f(0, 0);
 	this->rot = 0;
+	this->speed = 0;
+	this->delayShoot = 0;
 }
 
-Player::Player(int life, std::string name, sf::Vector2f pos, float rot, float speed, sf::Color color) {
+Player::Player(int life, std::string name, sf::Vector2f pos, float rot, float speed, sf::Color color, float delayShoot) {
 	this->life = life;
 	this->name = name;
 	this->pos = pos;
@@ -58,17 +64,19 @@ Player::Player(int life, std::string name, sf::Vector2f pos, float rot, float sp
 	mMoveLeft = false;
 	mMoveRight = false; 
 	mRotateLeft = false;
-	mRotateRight = false;
+	mRotateRight = false; 
+	mShoot = false;
 	this->collider.setPosition(pos);
 	this->collider.setOrigin(sf::Vector2f(32, 20));
 	this->collider.setFillColor(color);
+	this->delayShoot = delayShoot;
 }
 
 Player::~Player() {
 
 }
 
-void Player::Create(int life, std::string name, sf::Vector2f pos, float rot, float speed, sf::Color color) {
+void Player::Create(int life, std::string name, sf::Vector2f pos, float rot, float speed, sf::Color color, float delayShoot) {
 	this->life = life;
 	this->name = name;
 	this->pos = pos;
@@ -80,15 +88,17 @@ void Player::Create(int life, std::string name, sf::Vector2f pos, float rot, flo
 	this->collider.setOutlineThickness(1);
 	this->speed = speed;
 	this->color = color;
-	this->mMoveUp = false;
-	this->mMoveDown = false;
-	this->mMoveLeft = false;
-	this->mMoveRight = false;
+	mMoveUp = false;
+	mMoveDown = false;
+	mMoveLeft = false;
+	mMoveRight = false;
 	mRotateLeft = false;
 	mRotateRight = false;
+	mShoot = false;
 	this->collider.setPosition(pos);
 	this->collider.setOrigin(sf::Vector2f(32,20));
 	this->collider.setFillColor(color);
+	this->delayShoot = delayShoot;
 }
 
 int Player::GetLife() {
@@ -115,6 +125,10 @@ sf::RectangleShape Player::GetShape() {
 	return collider;
 }
 
+float Player::GetDelayShoot() {
+	return delayShoot;
+}
+
 void Player::SetLife(int life) {
 	this->life = life;
 }
@@ -131,4 +145,8 @@ void Player::SetPos(sf::Vector2f pos) {
 void Player::SetRot(float rot) {
 	this->rot = rot;
 	collider.setRotation(rot);
+}
+
+void Player::SetDelayShoot(float delayShoot) {
+	this->delayShoot = delayShoot;
 }
