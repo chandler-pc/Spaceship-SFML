@@ -19,6 +19,7 @@ class Bullet {
 		void SetTime(float);
 		void SetPos(sf::Vector2f);
 		sf::RectangleShape GetShape(); 
+		sf::Color GetColor();
 };
 
 Bullet::Bullet(float rot, sf::Vector2f pos, float time, float speed, sf::Color color) {
@@ -60,4 +61,8 @@ float Bullet::GetRot() {
 }
 sf::Vector2f Bullet::GetPos() {
 	return this->pos;
+}
+
+sf::Color Bullet::GetColor() {
+	return color;
 }

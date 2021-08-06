@@ -17,8 +17,11 @@ class Game {
 		void Update();
 		void Render();
 		void PlayerInput(sf::Keyboard::Key, bool);
+		void Damage(float);
 		std::list<Bullet> BulletList;
 	public:
+		sf::RectangleShape bgLifeBar;
+		sf::RectangleShape LifeBar;
 		Game();
 		void Run();
 };
@@ -29,6 +32,12 @@ Game::Game() {
 	mPlayer.Create(100,"Player",sf::Vector2f(400,400),0, 200, sf::Color(82,50,209), .5f);
 	background.setSize(sf::Vector2f(800,800));
 	background.setFillColor(sf::Color::Black);
+	bgLifeBar.setFillColor(sf::Color::Red);
+	bgLifeBar.setSize(sf::Vector2f(700, 30));
+	bgLifeBar.setPosition(sf::Vector2f(50,750));
+	LifeBar.setFillColor(sf::Color::Green);
+	LifeBar.setSize(sf::Vector2f(700, 30));
+	LifeBar.setPosition(sf::Vector2f(50, 750));
 	deltaTime = 0;
 }
 
@@ -127,9 +136,15 @@ void Game::Update() {
 					(*it).SetTime((*it).GetTime() - deltaTime);
 				}
 			}
-			if ((*it).GetTime() < 0) {
+			if ((*it).GetTime() <= 0) {
 				BulletList.pop_front();
 				it = BulletList.begin();
+			}
+			if (mPlayer.GetShape().getGlobalBounds().contains((*it).GetShape().getPosition() - sf::Vector2f(2,2))) {
+				if ((*it).GetColor() != mPlayer.GetColor()) {
+					(*it).SetPos(sf::Vector2f(0, 0));
+					Damage(10);
+				}
 			}
 		}
 	}
@@ -143,6 +158,8 @@ void Game::Render() {
 	{
 		mWindow.draw((*it).GetShape());
 	}
+	mWindow.draw(bgLifeBar);
+	mWindow.draw(LifeBar);
 	mWindow.display();
 }
 
@@ -168,4 +185,9 @@ void Game::PlayerInput(sf::Keyboard::Key key, bool isPress) {
 	if (key == sf::Keyboard::Key::Space) {
 		mPlayer.mShoot = isPress;
 	}
+}
+
+void Game::Damage(float damage){
+	LifeBar.setSize(sf::Vector2f((mPlayer.GetLife() - damage)*7,30));
+	mPlayer.SetLife(mPlayer.GetLife() - damage);
 }

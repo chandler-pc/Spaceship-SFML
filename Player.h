@@ -22,6 +22,7 @@ class Player {
 		sf::Vector2f GetPos();
 		float GetRot();
 		float GetSpeed();
+		sf::Color GetColor();
 		sf::RectangleShape GetShape();
 		void SetLife(int);
 		void SetName(std::string);
@@ -55,8 +56,8 @@ Player::Player(int life, std::string name, sf::Vector2f pos, float rot, float sp
 	this->texture.loadFromFile("./Assets/Player.png");
 	this->collider.setSize(sf::Vector2f(64, 40));
 	this->collider.setTexture(&texture);
-	this->collider.setOutlineColor(sf::Color::Green);
-	this->collider.setOutlineThickness(1);
+	/*this->collider.setOutlineColor(sf::Color::Green);
+	this->collider.setOutlineThickness(0);*/
 	this->speed = speed;
 	this->color = color;
 	mMoveUp = false;
@@ -84,8 +85,8 @@ void Player::Create(int life, std::string name, sf::Vector2f pos, float rot, flo
 	this->texture.loadFromFile("./Assets/Player.png");
 	this->collider.setSize(sf::Vector2f(64, 40));
 	this->collider.setTexture(&texture);
-	this->collider.setOutlineColor(sf::Color::Green);
-	this->collider.setOutlineThickness(1);
+	/*this->collider.setOutlineColor(sf::Color::Green);
+	this->collider.setOutlineThickness(1);*/
 	this->speed = speed;
 	this->color = color;
 	mMoveUp = false;
@@ -127,6 +128,10 @@ sf::RectangleShape Player::GetShape() {
 
 float Player::GetDelayShoot() {
 	return delayShoot;
+}
+
+sf::Color Player::GetColor() {
+	return color;
 }
 
 void Player::SetLife(int life) {
