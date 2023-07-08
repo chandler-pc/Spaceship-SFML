@@ -1,8 +1,8 @@
 #include <iostream>
-#include "Source/Public/Menu.h"
+#include "src/public/Game.h"
 
 int main() {
-	Menu menu;
-	menu.Run();
+	Game* game = new Game();
+	game->Run();
 	return 0;
 }
